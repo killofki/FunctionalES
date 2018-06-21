@@ -392,17 +392,11 @@ function hurdle( ... fs ) {
 			} 
 		return go( 
 			  reduce( 
-				  function( arg, f ) { 
-					if ( errorF && error ) { 
-						return error; 
-						} 
-					if ( nullableF && arg == null ) { 
-						return arg; 
-						} 
-					if ( catched ) { 
-						return arg; 
-						} 
-					return go( 
+				  ( arg, f ) => 
+					  errorF && error ? error 
+					: nullableF && arg == null ? arg 
+					: catched ? arg 
+					: go( 
 						  find( pnb => callRight( arg, pnb .predi ), exceptions ) 
 						, function( pnb ) { 
 							if ( pnb ) { 
@@ -421,8 +415,6 @@ function hurdle( ... fs ) {
 							return res; 
 							} 
 						) 
-						; 
-					} 
 				, toTuple( ar ) 
 				, fs 
 				) 
