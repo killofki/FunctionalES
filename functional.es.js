@@ -38,7 +38,12 @@ function * entriesIterator( coll ) {
 		} 
 	} 
 
-Object .assign( ObjIter, { values : ObjIter( valuesIterator ), entries : ObjIter( entriesIterator ) } ); 
+[ ObjIter, { values : valuesIterator, entries : entriesIterator } ] 
+.reduce( ( F, o ) => ( 
+	  Object .keys( p => o[ p ] = F( o[ p ] ) ) 
+	, Object .assign( F, o ) 
+	) ) 
+	; 
 
 const 
 	  hasIter = a => !! ( a && a[ Symbol .iterator ] )
