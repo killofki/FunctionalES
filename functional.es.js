@@ -489,20 +489,20 @@ const baseSel = sep => curry2( ( selector, acc ) =>
 const sel = baseSel( ' > ' ); 
 
 const Functional = { 
-	curry2, flip, 
-	then, identity, noop, 
-	ObjIter, valuesIter, stepIter, hasIter, isObject, 
-	map, mapC, mapS, series, concurrency, 
-	filter, reject, compact, 
-	reduce, 
-	go, pipe, tap, hi, 
-	findVal, find, some, none, every, findWhere, 
-	findValC, findC, someC, noneC, everyC, findWhereC, 
-	baseSel, sel, 
-	match, or, and, isMatch, 
-	Tuple, tuple, toTuple, callRight, 
-	negate, complement, not, isAny, isUndefined, 
-	each, log 
+	  curry2, flip 
+	, then, identity, noop 
+	, ObjIter, valuesIter, stepIter, hasIter, isObject 
+	, map, mapC, mapS, series, concurrency 
+	, filter, reject, compact 
+	, reduce 
+	, go, pipe, tap, hi 
+	, findVal, find, some, none, every, findWhere 
+	, findValC, findC, someC, noneC, everyC, findWhereC 
+	, baseSel, sel 
+	, match, or, and, isMatch 
+	, Tuple, tuple, toTuple, callRight 
+	, negate, complement, not, isAny, isUndefined 
+	, each, log 
 	} 
 	; 
 
