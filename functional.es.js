@@ -15,7 +15,7 @@ const { log } = console;
 
 const identity = a => a; 
 
-function noop() {} 
+const noop = () => {} 
 
 const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) => 
 	({ next : _ => iter .next(), [ Symbol .iterator ]() { return this } }) 
@@ -79,18 +79,16 @@ class Tuple {
 		} 
 	} 
 
-function tuple( ... args ) { 
-	if ( args .length == 1) { 
-		return args[ 0 ]; 
-		} 
-	return find( arg => arg instanceof Promise, args ) ? then( toTuple, Promise .all( args ) ) 
-		: new Tuple( ... args ) 
-		; 
-	} 
+const tuple = ( ... args ) => 
+	  args .length == 1 ? args[ 0 ] 
+	: find( arg => arg instanceof Promise, args ) ? then( toTuple, Promise .all( args ) ) 
+	: new Tuple( ... args ) 
+	; 
 
-function toTuple( list ) { 
-	return list .length == 1 ? list[ 0 ] : tuple( ... list ); 
-	} 
+const toTuple = ( list ) =>  
+	  list .length == 1 ? list[ 0 ] 
+	: tuple( ... list ) 
+	; 
 
 const callRight = ( arg, f ) => 
 	  arg instanceof Tuple ? f( ... arg ) 
