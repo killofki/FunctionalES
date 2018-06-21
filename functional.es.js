@@ -100,9 +100,9 @@ const callRight = ( arg, f ) =>
 
 const mfReduce = ( f1, f2, f3 ) => ( f, coll ) => 
 	  coll instanceof Map ? reduce( f1( f ), new Map, coll .entries() ) 
-   : hasIter( coll ) ? reduce( f2( f ), [], coll ) 
-   : isObject( coll ) ? reduce( f3( f ), {}, ObjIter .entries( coll ) ) 
-   : [] 
+	: hasIter( coll ) ? reduce( f2( f ), [], coll ) 
+	: isObject( coll ) ? reduce( f3( f ), {}, ObjIter .entries( coll ) ) 
+	: [] 
 	; 
 
 const _map = mfReduce( 
@@ -114,8 +114,8 @@ const _map = mfReduce(
 
 const map = curry2( ( f, coll ) => 
 	  coll instanceof Function ? pipe( coll, f ) 
-   : coll instanceof Promise ? coll .then( f ) 
-   : _map( f, coll ) 
+	: coll instanceof Promise ? coll .then( f ) 
+	: _map( f, coll ) 
 	) 
 	; 
 
@@ -325,7 +325,7 @@ const mapC = curry2( ( f, coll, limit = Infinity ) =>
 		, setPair( f ) 
 		, ( acc, l ) => l .forEach( ([ k, v ]) => acc .set( k, v ) ) 
 		) 
-   : hasIter( coll ) ? 
+	: hasIter( coll ) ? 
 		  limit == Infinity ? pAall( mapIter( f, coll ) ) 
 		: mapCReduce( [], stepIter( coll, limit ), f, ( acc, l ) => acc .push( ... l ) ) 
 	: isObject(coll) ? mapCReduce( 
