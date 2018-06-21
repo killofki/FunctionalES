@@ -2,21 +2,25 @@
 ! function() { 
 /// 
 
-  const curry2 = f => (..._) => _.length < 2 ? (..._2) => f(..._, ..._2) : f(..._); 
+const curry2 = f => ( ... _ ) => 
+	  _ .length < 2 ? ( ... _2 ) => f(..._, ..._2) 
+	: f(..._) 
+	; 
 
-  const flip = f => (..._) => f(..._.reverse()); 
+const flip = f => ( ... _ ) => f( ... _ .reverse() ); 
 
-  const then = curry2((f, a) => a instanceof Promise ? a.then(f) : f(a)); 
+const then = curry2( ( f, a ) => a instanceof Promise ? a .then( f ) : f( a ) ); 
 
-  const log = console.log; 
+const { log } = console; 
 
-  const identity = a => a; 
+const identity = a => a; 
 
-  function noop() {} 
+function noop() {} 
 
-  const ObjIter = curry2((generator, coll, iter = generator(coll)) => { 
-    return { next: _=> iter.next(), [Symbol.iterator]() { return this } } 
-  }); 
+const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) => { 
+   return { next: _ => iter .next(), [ Symbol .iterator ]() { return this } } 
+	} ) 
+	; 
 
   Object.assign(ObjIter, { 
     values: ObjIter(function *(coll) { 
