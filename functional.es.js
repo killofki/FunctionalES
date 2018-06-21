@@ -1,5 +1,5 @@
 // to arrow with killofki version .. 
-! () => { 
+( () => { 
 /// 
 
 const curry2 = f => ( ... _ ) => 
@@ -514,7 +514,7 @@ else {
 	} 
 
 /// 
-	}() 
+	})() 
 	; 
 
 // original https://github.com/Functional-JavaScript/FunctionalES/blob/master/functional.es.js 
