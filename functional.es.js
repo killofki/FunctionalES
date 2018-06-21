@@ -40,48 +40,58 @@ Object .assign( ObjIter, {
 	} ) 
 	; 
 
-  const hasIter = a => !!(a && a[Symbol.iterator]), 
-    isObject = a => !!a && (typeof a == 'object' || typeof a == 'function'); 
+const 
+	  hasIter = a => !! ( a && a[ Symbol .iterator ] )
+	, isObject = a => !! a && ( typeof a == 'object' || typeof a == 'function' ) 
+	; 
 
-  const valuesIter = coll => 
-    hasIter(coll) ? 
-      coll[typeof coll.values == 'function' ? 'values' : Symbol.iterator]() : 
-      ObjIter.values(coll); // isPlainObject 
+const valuesIter = coll => 
+	  hasIter( coll ) ? coll[ typeof coll .values == 'function' ? 'values' : Symbol .iterator ]() 
+	: ObjIter .values( coll) 
+	; // isPlainObject 
 
-  const reduce = curry2((f, acc, coll) => { 
-    const iter = valuesIter(coll === undefined ? acc : coll); 
-    return then(function recur(acc) { 
-      for (const val of iter) { 
-        if ((acc = f(acc, val)) instanceof Promise) 
-          return acc.then(recur); 
-      } 
-      return acc; 
-    }, coll === undefined ? iter.next().value : acc); 
-  }); 
+const reduce = curry2( ( f, acc, coll ) => { 
+	const iter = valuesIter( coll === undefined ? acc : coll ); 
+	return then( 
+		  function recur( acc ) { 
+			for ( const val of iter ) { 
+				if ( ( acc = f( acc, val ) ) instanceof Promise ) { 
+					return acc .then( recur ); 
+					} 
+				} 
+			return acc; 
+			} 
+		, coll === undefined ? iter .next() .value : acc 
+		) 
+		; 
+	} ) // -- reduce 
+	; 
 
-  class Tuple { 
-    constructor() { 
-      this.value = arguments; 
-    } 
-    [Symbol.iterator]() { 
-      return this.value[Symbol.iterator](); 
-    } 
-  } 
+class Tuple { 
+	constructor() { 
+		this .value = arguments; 
+		} 
+	[ Symbol .iterator ]() { 
+		return this .value[ Symbol .iterator ](); 
+		} 
+	} 
 
-  function tuple(...args) { 
-    if (args.length == 1) return args[0]; 
-    return find(arg => arg instanceof Promise, args) ? 
-      then(toTuple, Promise.all(args)) : 
-      new Tuple(...args); 
-  } 
+function tuple( ... args ) { 
+	if ( args .length == 1) { 
+		return args[ 0 ]; 
+		} 
+	return find( arg => arg instanceof Promise, args ) ? then( toTuple, Promise .all( args ) ) 
+		: new Tuple( ... args ) 
+		; 
+	} 
 
-  function toTuple(list) { 
-    return list.length == 1 ? list[0] : tuple(...list); 
-  } 
+function toTuple( list ) { 
+	return list .length == 1 ? list[ 0 ] : tuple( ... list ); 
+	} 
 
-  function callRight(arg, f) { 
-    return arg instanceof Tuple ? f(...arg) : arg === undefined ? f() : f(arg); 
-  } 
+function callRight( arg, f ) { 
+	return arg instanceof Tuple ? f( ... arg ) : arg === undefined ? f() : f( arg ); 
+	} 
 
   const mfReduce = (f1, f2, f3) => (f, coll) => 
     coll instanceof Map ? reduce(f1(f), new Map, coll.entries()) 
