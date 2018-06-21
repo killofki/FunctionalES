@@ -23,15 +23,22 @@ const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) =>
 	; 
 
 Object .assign( ObjIter, { 
-	values: ObjIter(function *(coll) { 
-      if (!coll) return; 
-      for (const key in coll) yield coll[key]; 
-    }), 
-    entries: ObjIter(function *(coll) { 
-      if (!coll) return; 
-      for (const key in coll) yield [key, coll[key]]; 
-    }) 
-  }); 
+	  values : ObjIter( function * ( coll ) { 
+		if ( ! coll ) 
+			{ return; } 
+		for ( const key in coll ) { 
+			yield coll[ key ]; 
+			} 
+		} ) 
+	, entries : ObjIter( function * ( coll ) { 
+		if ( ! coll ) 
+			{ return; } 
+      for ( const key in coll ) { 
+			yield [ key, coll[ key ] ]; 
+			} 
+		} ) 
+	} ) 
+	; 
 
   const hasIter = a => !!(a && a[Symbol.iterator]), 
     isObject = a => !!a && (typeof a == 'object' || typeof a == 'function'); 
