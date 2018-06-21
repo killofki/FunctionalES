@@ -17,9 +17,9 @@ const identity = a => a;
 
 function noop() {} 
 
-const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) => { 
-   return { next : _ => iter .next(), [ Symbol .iterator ]() { return this } } 
-	} ) 
+const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) => 
+	({ next : _ => iter .next(), [ Symbol .iterator ]() { return this } }) 
+	) 
 	; 
 
 Object .assign( ObjIter, { 
