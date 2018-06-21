@@ -1,5 +1,5 @@
 // to arrow with killofki version .. 
-! function() { 
+! () => { 
 /// 
 
 const curry2 = f => ( ... _ ) => 
