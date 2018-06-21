@@ -284,7 +284,7 @@ const and = ( ... fs ) => {
 function stepIter( data, limit ) { 
 	var iter = valuesIter( data ), i = 0; 
 	return limit == Infinity ? iter : { 
-		  next : function() { 
+		  [ 'next' ]() { // next : 
 			if ( i++ == limit ) { 
 				i = 0; 
 				return { value: undefined, done: true }; 
@@ -293,7 +293,7 @@ function stepIter( data, limit ) {
 			this .remain = ! cur .done; 
 			return cur; 
 			} 
-		, [ Symbol .iterator ] : function() { return this; } 
+		, [ Symbol .iterator ]() { return this; } 
 		, remain : true 
 		} 
 	} 
