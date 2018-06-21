@@ -39,10 +39,12 @@ function * entriesIterator( coll ) {
 	} 
 
 [ ObjIter, { values : valuesIterator, entries : entriesIterator } ] 
-.reduce( ( F, o ) => ( 
-	  Object .keys( p => o[ p ] = F( o[ p ] ) ) 
-	, Object .assign( F, o ) 
-	) ) 
+.reduce( ( F, o ) => {  
+	for ( const [ p, v ] of entriesIterator( o ) ) { 
+		o[ p ] = F( v ); 
+		} 
+	Object .assign( F, o ); 
+	} ) 
 	; 
 
 const 
@@ -52,7 +54,7 @@ const
 
 const valuesIter = coll => 
 	  hasIter( coll ) ? coll[ typeof coll .values == 'function' ? 'values' : Symbol .iterator ]() 
-	: ObjIter .values( coll) 
+	: ObjIter .values( coll ) 
 	; // isPlainObject 
 
 const reduce = curry2( ( f, acc, coll ) => { 
