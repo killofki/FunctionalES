@@ -405,3 +405,6 @@
     window.Functional = Functional;
   }
 } ();
+
+// original https://github.com/Functional-JavaScript/FunctionalES/blob/master/functional.es.js 
+// twit from https://twitter.com/adhrinae/status/1009424934693568512 
