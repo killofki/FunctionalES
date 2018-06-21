@@ -380,107 +380,135 @@ const everyC = curry2( ( f, coll ) => {
 const findWhereC = curry2( ( w, coll ) => findC( isMatch( w ), coll ) ); 
 
 function hurdle( ... fs ) { 
-    var errorF, nullableF, completeF, exceptions = []; 
+	var errorF, nullableF, completeF, exceptions = []; 
+	
+	function evaluator() { 
+		var error = false, catched = false; 
+		if ( ! errorF && ! exceptions .length && ! nullableF ) { 
+			nullableF = noop; 
+			} 
+		return go( 
+			  reduce( 
+				  function( arg, f ) { 
+					if ( errorF && error ) { 
+						return error; 
+						} 
+					if ( nullableF && arg == null ) { 
+						return arg; 
+						} 
+					if ( catched ) { 
+						return arg; 
+						} 
+					return go( 
+						  find( pnb => callRight( arg, pnb .predi ), exceptions ) 
+						, 
+						function( pnb ) { 
+							if ( pnb ) { 
+								return ( catched = true, callRight( arg, pnb .body ) ); 
+								} 
+							if ( ! errorF) { 
+								return callRight( arg, f ); 
+								} 
+							try { 
+								var res = callRight( arg, f ); 
+								res = res instanceof Promise ? res .then( a => a, err => error = err ) : res; 
+								} 
+							catch ( err ) { 
+								error = err; 
+								} 
+							return res; 
+							} 
+						) 
+						; 
+					} 
+				, toTuple( arguments ) 
+				, fs 
+				) 
+			, function( res ) { 
+				if ( catched ) { 
+					return res; 
+					} 
+				if ( error ) { 
+					return errorF ? errorF( error ) 
+						: console .log( 'Uncaught Error: ', error ) 
+						; 
+					} 
+				if ( nullableF && res == null ) { 
+					return nullableF( res ); 
+					} 
+				return completeF ? completeF( res ) : res; 
+			} ) 
+			; 
+		} // -- evaluator() 
+	
+	Object .assign( evaluator, { 
+		  nullable : function( ... fs ) { 
+			nullableF = fs .length ? pipe( ... fs ) : a => a; 
+			return evaluator; 
+			} 
+		, error : function( ... fs ) { 
+			errorF = pipe( ... fs ); 
+			return evaluator; 
+			} 
+		, exception : function( ... fs ) { 
+			var pnb = { predi : pipe( ... fs ) }; 
+			return function( ... fs ) { 
+				pnb .body = pipe( ... fs ); 
+				exceptions .push( pnb ); 
+				return evaluator; 
+				} 
+				; 
+			} 
+		, complete : function( ... fs ) { 
+			completeF = pipe( ... fs ); 
+			return evaluator; 
+			} 
+		} ) 
+		; 
+	
+	return evaluator; 
+	} // -- hurdle() 
 
-    function evaluator() { 
-      var error = false, catched = false; 
-      if (!errorF && !exceptions.length && !nullableF) nullableF = noop; 
-      return go( 
-        reduce(function(arg, f) { 
-          if (errorF && error) return error; 
-          if (nullableF && arg == null) return arg; 
-          if (catched) return arg; 
-          return go( 
-            find(pnb => callRight(arg, pnb.predi), exceptions), 
-            function(pnb) { 
-              if (pnb) return catched = true, callRight(arg, pnb.body); 
-              if (!errorF) return callRight(arg, f); 
-              try { 
-                var res = callRight(arg, f); 
-                res = res instanceof Promise ? res.then(a => a, err => error = err) : res; 
-              } catch (err) { 
-                error = err; 
-              } 
-              return res; 
-            } 
-          ); 
-        }, toTuple(arguments), fs), 
-        function(res) { 
-          if (catched) return res; 
-          if (error) return errorF ? 
-            errorF(error) : console.log('Uncaught Error: ', error); 
-          if (nullableF && res == null) return nullableF(res); 
-          return completeF ? completeF(res) : res; 
-        }); 
-    } 
+const baseSel = sep => curry2( ( selector, acc ) => 
+	  Array .isArray( selector ) ? reduce( flip( baseSel( sep ) ), acc, selector ) 
+	: isObject( selector ) ? findWhere( selector, acc ) 
+	: reduce( ( acc, key, tk = key .trim(), s = tk[ 0 ] ) => 
+		  ! acc ? acc 
+		: s == '#' ? findWhere( { id : tk.substr( 1 ) }, acc ) 
+		: s == '[' || s == '{' ? findWhere( JSON .parse( tk ), acc ) 
+		: acc[ tk ] 
+		, acc 
+		, selector .split( sep ) 
+		) 
+	) 
+	; 
 
-    Object.assign(evaluator, { 
-      nullable: function(...fs) { 
-        nullableF = fs.length ? pipe(...fs) : a => a; 
-        return evaluator; 
-      }, 
-      error: function(...fs) { 
-        errorF = pipe(...fs); 
-        return evaluator; 
-      }, 
-      exception: function(...fs) { 
-        var pnb = { predi: pipe(...fs) }; 
-        return function(...fs) { 
-          pnb.body = pipe(...fs); 
-          exceptions.push(pnb); 
-          return evaluator; 
-        } 
-      }, 
-      complete: function(...fs) { 
-        completeF = pipe(...fs); 
-        return evaluator; 
-      } 
-    }); 
+const sel = baseSel( ' > ' ); 
 
-    return evaluator; 
-  } 
+const Functional = { 
+	curry2, flip, 
+	then, identity, noop, 
+	ObjIter, valuesIter, stepIter, hasIter, isObject, 
+	map, mapC, mapS, series, concurrency, 
+	filter, reject, compact, 
+	reduce, 
+	go, pipe, tap, hi, 
+	findVal, find, some, none, every, findWhere, 
+	findValC, findC, someC, noneC, everyC, findWhereC, 
+	baseSel, sel, 
+	match, or, and, isMatch, 
+	Tuple, tuple, toTuple, callRight, 
+	negate, complement, not, isAny, isUndefined, 
+	each, log 
+	} 
+	; 
 
-  const baseSel = sep => curry2((selector, acc) => 
-    Array.isArray(selector) ? 
-      reduce(flip(baseSel(sep)), acc, selector) 
-    : 
-    isObject(selector) ? 
-      findWhere(selector, acc) 
-    : 
-    reduce( 
-      (acc, key, tk = key.trim(), s = tk[0]) => 
-        !acc ? acc : 
-        s == '#' ? findWhere({ id: tk.substr(1) }, acc) : 
-        s == '[' || s == '{' ? findWhere(JSON.parse(tk), acc) : 
-        acc[tk], 
-      acc, 
-      selector.split(sep)) 
-  ); 
-
-  const sel = baseSel(' > '); 
-
-  const Functional = { 
-    curry2, flip, 
-    then, identity, noop, 
-    ObjIter, valuesIter, stepIter, hasIter, isObject, 
-    map, mapC, mapS, series, concurrency, 
-    filter, reject, compact, 
-    reduce, 
-    go, pipe, tap, hi, 
-    findVal, find, some, none, every, findWhere, 
-    findValC, findC, someC, noneC, everyC, findWhereC, 
-    baseSel, sel, 
-    match, or, and, isMatch, 
-    Tuple, tuple, toTuple, callRight, 
-    negate, complement, not, isAny, isUndefined, 
-    each, log 
-  }; 
-
-  if (typeof global == 'object') { 
-    module.exports = Functional; 
-  } else { 
-    window.Functional = Functional; 
-  } 
+if ( typeof global == 'object' ) { 
+	module .exports = Functional; 
+	} 
+else { 
+	window .Functional = Functional; 
+	} 
 
 /// 
 	}() 
