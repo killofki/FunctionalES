@@ -234,8 +234,8 @@ const baseMatch = ( targets ) => {
 		} 
 	_case .case = _case; 
 	
-	function _body() { 
-		cbs[ cbs .length - 1 ] ._body = pipe( ... arguments ); 
+	function _body( ... ar ) { 
+		cbs[ cbs .length - 1 ] ._body = pipe( ... ar ); 
 		return _case; 
 		} 
 	
@@ -268,17 +268,15 @@ const or = ( ... fs ) => {
 
 const and = ( ... fs ) => { 
 	const last = fs .pop(); 
-	return function() { 
-		return go( 
-			  fs 
-			, findVal( pipe( 
-				  f => f( ... arguments ) 
-				, a => a ? undefined : a 
-				) ) 
-			, a => a === undefined ? last( ... arguments ) : a 
-			) 
-			; 
-		} 
+	return ( ... ar ) => go( 
+		  fs 
+		, findVal( pipe( 
+			  f => f( ... ar ) 
+			, a => a ? undefined : a 
+			) ) 
+		, a => a === undefined ? last( ... ar ) : a 
+		) 
+		; 
 	} 
 	; 
 
@@ -348,13 +346,15 @@ const thenCatch = ( f, catchF, a ) => {
 
 const findValC = curry2( ( f, coll, limit = Infinity ) => { 
 	const iter = stepIter( coll, limit ); 
-	return new Promise( function( resolve, reject ) { 
+	return new Promise( findValCThread ); 
+	
+	function findValCThread( resolve, reject ) { 
 		! function recur() { 
 			var t = 0, r = 0; 
 			for ( const a of iter ) { 
 				  ++t 
 				, thenCatch( 
-					b => b === undefined ? t == ++r && iter .remain && recur() 
+					  b => b === undefined ? t == ++r && iter .remain && recur() 
 					: resolve(b) 
 				, reject 
 				, f( a ) 
@@ -363,8 +363,7 @@ const findValC = curry2( ( f, coll, limit = Infinity ) => {
 				} 
 			}() 
 			; 
-		} ) 
-		; 
+		}
 	} ) 
 	; 
 
@@ -386,7 +385,7 @@ const findWhereC = curry2( ( w, coll ) => findC( isMatch( w ), coll ) );
 function hurdle( ... fs ) { 
 	var errorF, nullableF, completeF, exceptions = []; 
 	
-	function evaluator() { 
+	function evaluator( ... ar ) { 
 		var error = false, catched = false; 
 		if ( ! errorF && ! exceptions .length && ! nullableF ) { 
 			nullableF = noop; 
@@ -424,7 +423,7 @@ function hurdle( ... fs ) {
 						) 
 						; 
 					} 
-				, toTuple( arguments ) 
+				, toTuple( ar ) 
 				, fs 
 				) 
 			, function( res ) { 
