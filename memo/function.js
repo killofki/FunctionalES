@@ -1,3 +1,5 @@
+// to arrow ..? 
+
 function memoize(f) {
   const wm = new WeakMap();
   return function(obj, ...rest) {
@@ -110,3 +112,6 @@ function pipe(f) {
     return reduceAcc(callTpRight, toTuple(arguments), fs);
   }
 }
+
+// original https://github.com/Functional-JavaScript/FunctionalES 
+// read from https://twitter.com/adhrinae/status/1009424934693568512
