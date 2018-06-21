@@ -18,12 +18,12 @@ const identity = a => a;
 function noop() {} 
 
 const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) => { 
-   return { next: _ => iter .next(), [ Symbol .iterator ]() { return this } } 
+   return { next : _ => iter .next(), [ Symbol .iterator ]() { return this } } 
 	} ) 
 	; 
 
-  Object.assign(ObjIter, { 
-    values: ObjIter(function *(coll) { 
+Object .assign( ObjIter, { 
+	values: ObjIter(function *(coll) { 
       if (!coll) return; 
       for (const key in coll) yield coll[key]; 
     }), 
