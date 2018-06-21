@@ -426,20 +426,15 @@ function hurdle( ... fs ) {
 				, toTuple( ar ) 
 				, fs 
 				) 
-			, function( res ) { 
-				if ( catched ) { 
-					return res; 
-					} 
-				if ( error ) { 
-					return errorF ? errorF( error ) 
-						: console .log( 'Uncaught Error: ', error ) 
-						; 
-					} 
-				if ( nullableF && res == null ) { 
-					return nullableF( res ); 
-					} 
-				return completeF ? completeF( res ) : res; 
-			} ) 
+			, res => 
+				  catched ? res 
+				: error ? 
+					  errorF ? errorF( error ) 
+					: console .log( 'Uncaught Error: ', error ) 
+				: nullableF && res == null ? nullableF( res ) 
+				: completeF ? completeF( res ) 
+				: res 
+			) 
 			; 
 		} // -- evaluator() 
 	
