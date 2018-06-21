@@ -216,7 +216,7 @@ const isMatch = curry2( ( a, b ) =>
 
 const findWhere = curry2( ( w, coll ) => find( isMatch( w ), coll ) ); 
 
-function baseMatch( targets ) { 
+const baseMatch = ( targets ) => { 
 	var cbs = []; 
 	
 	function _evl() { 
@@ -229,7 +229,7 @@ function baseMatch( targets ) {
 		} 
 	
 	function _case( f ) { 
-		cbs .push({ _case: typeof f == 'function' ? pipe( ... arguments ) : isMatch( f ) }); 
+		cbs .push({ _case : typeof f == 'function' ? pipe( ... arguments ) : isMatch( f ) }); 
 		return _body; 
 		} 
 	_case .case = _case; 
@@ -239,10 +239,11 @@ function baseMatch( targets ) {
 		return _case; 
 		} 
 	
-	_case .else = function() { 
-		_case( _ => true ) ( ... arguments ); 
-		return targets ? _evl() : ( ... targets2 ) => ( ( targets = targets2 ), _evl() ); 
-		} 
+	_case .else = ( ... ar ) => (  
+		  _case( _ => true )( ... ar ) 
+		, targets ? _evl() 
+		: ( ... targets2 ) => ( ( targets = targets2 ), _evl() ) 
+		) 
 		; 
 	
 	return _case; 
@@ -253,17 +254,15 @@ match .case = ( ... _ ) => baseMatch( null ) .case( ... _ );
 
 const or = ( ... fs ) => { 
 	const last = fs .pop(); 
-	return function() { 
-		return go( 
-			  fs 
-			, findVal( pipe( 
-				  f => f( ... arguments ) 
-				, a => a ? a : undefined 
-				) ) 
-			, a => a ? a : last( ... arguments ) 
-			) 
+	return ( ... ar ) => go( 
+		  fs 
+		, findVal( pipe( 
+			  f => f( ... ar ) 
+			, a => a ? a : undefined 
+			) ) 
+		, a => a ? a : last( ... ar ) 
+		) 
 		; 
-		} 
 	} // -- or 
 	; 
 
