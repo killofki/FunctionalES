@@ -46,7 +46,7 @@ function * entriesIterator( coll ) {
 	; 
 
 const 
-	  hasIter = a => !! ( a && a[ Symbol .iterator ] )
+	  hasIter = a => !! ( a && a[ Symbol .iterator ] ) 
 	, isObject = a => !! a && ( typeof a == 'object' || typeof a == 'function' ) 
 	; 
 
@@ -73,9 +73,7 @@ const reduce = curry2( ( f, acc, coll ) => {
 	; 
 
 class Tuple { 
-	constructor() { 
-		this .value = arguments; 
-		} 
+	constructor( ... ar ) { this .value = ar; } 
 	[ Symbol .iterator ]() { 
 		return this .value[ Symbol .iterator ](); 
 		} 
@@ -94,9 +92,11 @@ function toTuple( list ) {
 	return list .length == 1 ? list[ 0 ] : tuple( ... list ); 
 	} 
 
-function callRight( arg, f ) { 
-	return arg instanceof Tuple ? f( ... arg ) : arg === undefined ? f() : f( arg ); 
-	} 
+const callRight = ( arg, f ) => 
+	  arg instanceof Tuple ? f( ... arg ) 
+	: arg === undefined ? f() 
+	: f( arg ) 
+	; 
 
 const mfReduce = ( f1, f2, f3 ) => ( f, coll ) => 
 	  coll instanceof Map ? reduce( f1( f ), new Map, coll .entries() ) 
