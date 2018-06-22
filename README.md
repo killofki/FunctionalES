@@ -94,3 +94,5 @@
 
 - [API](https://github.com/Functional-JavaScript/FunctionalES/blob/master/articles/ES6%2C%20%ED%95%A8%EC%88%98%ED%98%95%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%2C%20%EB%B9%84%EB%8F%99%EA%B8%B0%2C%20%EB%8F%99%EC%8B%9C%EC%84%B1%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/API.md) 
 	- 진행 중 
+
+** killofki ** 원 내용 중 README.md 와 functional.es.js 수정해보고있음. 

@@ -402,7 +402,7 @@ function hurdle( ... fs ) {
 							if ( pnb ) { 
 								return ( catched = true, callRight( arg, pnb .body ) ); 
 								} 
-							if ( ! errorF) { 
+							if ( ! errorF ) { 
 								return callRight( arg, f ); 
 								} 
 							try { 
