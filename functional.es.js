@@ -74,7 +74,7 @@ const reduce = curry2( ( f, acc, coll ) => {
 	} ) // -- reduce 
 	; 
 
-class Tuple { 
+class Tuple { // callRight joiner 
 	constructor( ... ar ) { this .value = ar; } 
 	[ Symbol .iterator ]() { 
 		return this .value[ Symbol .iterator ](); 
@@ -83,17 +83,14 @@ class Tuple {
 
 const tuple = ( ... args ) => 
 	  args .length == 1 ? args[ 0 ] 
-	: find( arg => arg instanceof Promise, args ) ? then( toTuple, Promise .all( args ) ) 
-	: new Tuple( ... args ) 
+	: find( arg => arg instanceof Promise, args ) ? then( toTuple, Promise .all( args ) ) // toTuple from await Promise() 
+	: new Tuple( ... args ) // construct Tuple 
 	; 
 
-const toTuple = ( list ) =>  
-	  list .length == 1 ? list[ 0 ] 
-	: tuple( ... list ) 
-	; 
+const toTuple = ( list ) => list .length == 1 ? list[ 0 ] : tuple( ... list ); // value or tuple list 
 
 const callRight = ( arg, f ) => 
-	  arg instanceof Tuple ? f( ... arg ) 
+	  arg instanceof Tuple ? f( ... arg ) // join from Tuple 
 	: arg === undefined ? f() 
 	: f( arg ) 
 	; 
