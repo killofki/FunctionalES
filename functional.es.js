@@ -67,9 +67,9 @@ const reduce = curry2( ( f, acc, coll ) => {
 					} 
 				} 
 			return acc; 
-			} 
+			} // -- function recur() 
 		, coll === undefined ? iter .next() .value : acc 
-		) 
+		) // -- return then() 
 		; 
 	} ) // -- reduce 
 	; 
