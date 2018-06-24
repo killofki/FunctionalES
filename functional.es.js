@@ -1,5 +1,5 @@
 // to arrow with killofki version .. 
-! function () { // var closer 
+! function () { // var closer from outer this 
 /// 
 
 const curry2 = f => ( ... _ ) => 
