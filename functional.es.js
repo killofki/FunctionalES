@@ -428,27 +428,27 @@ function hurdle( ... fs ) {
 	Object .assign( 
 		  evaluator 
 		, { 
-		  nullable : function( ... fs ) { 
-			nullableF = fs .length ? pipe( ... fs ) : a => a; 
-			return evaluator; 
-			} 
-		, error : function( ... fs ) { 
-			errorF = pipe( ... fs ); 
-			return evaluator; 
-			} 
-		, exception : function( ... fs ) { 
+		  nullable : ( ... fs ) => ( 
+			  ( nullableF = fs .length ? pipe( ... fs ) : a => a )  
+			, evaluator 
+			) 
+		, error : ( ... fs ) => ( 
+			  ( errorF = pipe( ... fs ) ) 
+			, evaluator 
+			) 
+		, exception : ( ... fs ) => { 
 			var pnb = { predi : pipe( ... fs ) }; 
-			return function( ... fs ) { 
-				pnb .body = pipe( ... fs ); 
-				exceptions .push( pnb ); 
-				return evaluator; 
-				} 
+			return ( ... fs ) => ( 
+				  ( pnb .body = pipe( ... fs ) ) 
+				, exceptions .push( pnb ) 
+				, evaluator 
+				) 
 				; 
 			} 
-		, complete : function( ... fs ) { 
-			completeF = pipe( ... fs ); 
-			return evaluator; 
-			} 
+		, complete : ( ... fs ) => ( 
+			  ( completeF = pipe( ... fs ) ) 
+			, evaluator 
+			) 
 		} ) 
 		; 
 	
