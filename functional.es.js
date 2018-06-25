@@ -162,13 +162,13 @@ const hurdles = map(
 	) 
 	; 
 
-const tap = ( ... fs) => { 
+const tap = ( ... fs ) => { 
 	const f = pipe( ... fs ); 
 	return ( ... args ) => go( f( ... args ), _ => toTuple( args ) ); 
 	} 
 	; 
 
-const hi = tap( console .log ); 
+const hi = tap( log ); 
 
 const each = curry2( ( f, coll ) => reduce( ( _, val ) => f( val ), null, coll ) ); 
 
@@ -419,7 +419,7 @@ function hurdle( ... fs ) {
 				  catched ? res 
 				: error ? 
 					  errorF ? errorF( error ) 
-					: console .log( 'Uncaught Error: ', error ) 
+					: log( 'Uncaught Error: ', error ) 
 				: nullableF && res == null ? nullableF( res ) 
 				: completeF ? completeF( res ) 
 				: res 
