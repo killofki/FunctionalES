@@ -241,6 +241,7 @@ const baseMatch = ( targets ) => {
 	
 	return _case; 
 	} // -- baseMatch() 
+	; 
 
 const match = ( ... _ ) => baseMatch( _ ); 
 match .case = ( ... _ ) => baseMatch( null ) .case( ... _ ); 
@@ -293,7 +294,8 @@ function stepIter( data, limit ) {
 const mapIter = curry2( ( f, iter, res = [] ) => { 
 	for ( const val of iter ) res .push( f( val ) ); 
 	return res; 
-	} ); 
+	} ) 
+	; 
 
 const pAall = l => Promise .all( l ); 
 
