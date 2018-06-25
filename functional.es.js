@@ -425,9 +425,7 @@ function hurdle( ... fs ) {
 			; 
 		} // -- evaluator() 
 	
-	Object .assign( 
-		  evaluator 
-		, { 
+	Object .assign( evaluator, { 
 		  nullable : ( ... fs ) => ( 
 			  ( nullableF = fs .length ? pipe( ... fs ) : a => a )  
 			, evaluator 
