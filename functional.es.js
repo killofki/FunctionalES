@@ -23,16 +23,12 @@ const ObjIter = curry2( ( generator, coll, iter = generator( coll ) ) =>
 	; 
 
 function * valuesIterator( coll ) { 
-	if ( ! coll ) 
-		{ return; } 
 	for ( const key in coll ) { 
 		yield coll[ key ]; 
 		} 
 	} 
 
 function * entriesIterator( coll ) { 
-	if ( ! coll ) 
-		{ return; } 
 	for ( const key in coll ) { 
 		yield [ key, coll[ key ] ]; 
 		} 
