@@ -305,7 +305,7 @@ function mapCReduce( acc, iter, mapF, extendF ) {
 	return go( 
 		  mapIter( mapF, iter ) 
 		, pAall 
-		, l => extendF(acc, l) 
+		, l => extendF( acc, l ) 
 		, _ => iter .remain ? mapCReduce( acc, iter, mapF, extendF ) : acc 
 		) 
 		; 
@@ -322,7 +322,7 @@ const mapC = curry2( ( f, coll, limit = Infinity ) =>
 	: hasIter( coll ) ? 
 		  limit == Infinity ? pAall( mapIter( f, coll ) ) 
 		: mapCReduce( [], stepIter( coll, limit ), f, ( acc, l ) => acc .push( ... l ) ) 
-	: isObject(coll) ? mapCReduce( 
+	: isObject( coll ) ? mapCReduce( 
 		  {} 
 		, stepIter( ObjIter .entries( coll ), limit ) 
 		, setPair( f ) 
@@ -352,7 +352,7 @@ const findValC = curry2( ( f, coll, limit = Infinity ) => {
 				  ++t 
 				, thenCatch( 
 					  b => b === undefined ? t == ++r && iter .remain && recur() 
-					: resolve(b) 
+					: resolve( b ) 
 				, reject 
 				, f( a ) 
 				) 
