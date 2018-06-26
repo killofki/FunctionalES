@@ -496,6 +496,7 @@ else {
 
 /// 
 	}() 
+&& console .log( 'Functional Loaded.' ) 
 	; 
 
 // original https://github.com/Functional-JavaScript/FunctionalES/blob/master/functional.es.js 
