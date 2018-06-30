@@ -72,9 +72,7 @@ const reduce = curry2( ( f, acc, coll ) => {
 
 class Tuple { // callRight joiner 
 	constructor( ... ar ) { this .value = ar; } 
-	[ Symbol .iterator ]() { 
-		return this .value[ Symbol .iterator ](); 
-		} 
+	[ Symbol .iterator ]() { return this .value[ Symbol .iterator ](); } 
 	} 
 
 const tuple = ( ... args ) => 
@@ -402,7 +400,7 @@ function hurdle( ... fs ) {
 								} 
 							try { 
 								var res = callRight( arg, f ); 
-								res = res instanceof Promise ? res .then( a => a, err => error = err ) : res; 
+								res = res instanceof Promise ? res .then( identity, err => error = err ) : res; 
 								} 
 							catch ( err ) { 
 								error = err; 
@@ -427,7 +425,7 @@ function hurdle( ... fs ) {
 	
 	Object .assign( evaluator, { 
 		  nullable : ( ... fs ) => ( 
-			  ( nullableF = fs .length ? pipe( ... fs ) : a => a )  
+			  ( nullableF = fs .length ? pipe( ... fs ) : identity )  
 			, evaluator 
 			) 
 		, error : ( ... fs ) => ( 
