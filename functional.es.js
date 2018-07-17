@@ -442,7 +442,10 @@ function hurdle( ... fs ) {
 							: ( q => { 
 								try { 
 									var res = callRight( arg, f ); 
-									res = res instanceof Promise ? res .then( identity, err => error = err ) : res; 
+									res = res instanceof Promise 
+											? res .then( identity, err => error = err ) 
+										: res 
+										; 
 									} 
 								catch ( err ) { error = err; } 
 								return res; 
