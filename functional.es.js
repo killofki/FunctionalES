@@ -417,7 +417,7 @@ function hurdle( ... fs ) {
 					: catched ? arg 
 					: go( 
 						  find( pnb => callRight( arg, pnb .predi ), exceptions ) 
-						, function( pnb ) { 
+						, pnb => { 
 							if ( pnb ) { 
 								return ( catched = true, callRight( arg, pnb .body ) ); 
 								} 
