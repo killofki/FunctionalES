@@ -335,7 +335,10 @@ function mapCReduce( acc, iter, mapF, extendF ) {
 		; 
 	} 
 
-const setPair = f => pair => go( pair[ 1 ], f, v => ( pair[ 1 ] = v, pair ) ); 
+const setPair = f => pair => go( pair[ 1 ], f, v => ( 
+	  pair[ 1 ] = v
+	, pair 
+	) ); 
 
 const mapC = curry2( ( f, coll, limit = Infinity ) => 
 	  coll instanceof Map ? mapCReduce( 
@@ -350,7 +353,9 @@ const mapC = curry2( ( f, coll, limit = Infinity ) =>
 		  {} 
 		, stepIter( ObjIter .entries( coll ), limit ) 
 		, setPair( f ) 
-		, ( acc, l ) => l .forEach( ([ k, v ]) => acc[ k ] = v ) 
+		, ( acc, l ) => l .forEach( ([ k, v ]) => 
+			acc[ k ] = v 
+			) 
 		) 
 	: [] 
 	) 
@@ -360,7 +365,11 @@ const series = ( ... _ ) => map( a => a(), ... _ );
 const concurrency = ( ... _ ) => mapC( a => a(), ... _ ); 
 
 const thenCatch = ( f, catchF, a ) => { 
-	try { return a instanceof Promise ? a .then( f, catchF ) : f( a ) } 
+	try { 
+		return a instanceof Promise ? a .then( f, catchF ) 
+			: f( a ) 
+			; 
+		} 
 	catch ( e ) { return catchF( e ); } 
 	} 
 	; 
