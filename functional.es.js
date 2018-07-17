@@ -140,11 +140,11 @@ const filter = curry2( mfReduce(
 		: m 
 		) 
 	, f => ( arr, v ) => go( f( v ), b => ( 
-		  b && arr .push( v )
+		  b && arr .push( v ) 
 		, arr 
 		) ) 
 	, f => ( o, [ k, v ] ) => go( f( v ), b => ( 
-		  b && ( o[ k ] = v )
+		  b && ( o[ k ] = v ) 
 		, o 
 		) ) 
 	) ) 
@@ -155,7 +155,7 @@ const reject = curry2( ( f, coll ) => filter( negate( f ), coll ) );
 const compact = filter( identity ); 
 
 const 
-	  negate = f => pipe( f, not )
+	  negate = f => pipe( f, not ) 
 	, complement = negate 
 	; 
 
@@ -165,8 +165,8 @@ const go = ( ... _ ) => reduce( callRight, _ );
 
 const pipe = ( ... _fs ) => 
 	Object .assign( 
-		  ( ... _ ) => reduce( callRight, toTuple( _ ), _fs )
-		, { _fs }
+		  ( ... _ ) => reduce( callRight, toTuple( _ ), _fs ) 
+		, { _fs } 
 		, hurdles 
 		) 
 	; 
@@ -238,7 +238,7 @@ const baseMatch = ( targets ) => {
 	
 	function _evl() { 
 		return go( 
-			  cbs
+			  cbs 
 			, find( pb => pb ._case( ... targets ) ) 
 			, pb => pb ._body( ... targets ) 
 			) 
@@ -336,7 +336,7 @@ function mapCReduce( acc, iter, mapF, extendF ) {
 	} 
 
 const setPair = f => pair => go( pair[ 1 ], f, v => ( 
-	  pair[ 1 ] = v
+	  pair[ 1 ] = v 
 	, pair 
 	) ); 
 
@@ -398,7 +398,11 @@ const findValC = curry2( ( f, coll, limit = Infinity ) => {
 	} ) 
 	; 
 
-const findC = curry2( ( f, coll, limit ) => findValC( a => go( a, f, b => b ? a : undefined ), coll, limit ) ); 
+const findC = curry2( ( f, coll, limit ) => findValC( 
+	  a => go( a, f, b => b ? a : undefined ) 
+	, coll 
+	, limit 
+	) ); 
 const someC = curry2( pipe( findC, isAny ) ); 
 const noneC = curry2( pipe( findC, isUndefined ) ); 
 const everyC = curry2( ( f, coll ) => { 
@@ -431,7 +435,7 @@ function hurdle( ... fs ) {
 						  find( pnb => callRight( arg, pnb .predi ), exceptions ) 
 						, pnb => ( 
 							  pnb ? ( 
-								  catched = true
+								  catched = true 
 								, callRight( arg, pnb .body ) 
 								) 
 							: ! errorF ? callRight( arg, f ) 
