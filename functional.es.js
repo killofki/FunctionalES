@@ -314,6 +314,7 @@ function stepIter( data, limit ) {
 			, [ Symbol .iterator ]() { return this; } 
 			, remain : true 
 			} 
+		; 
 	} 
 
 const mapIter = curry2( ( f, iter, res = [] ) => { 
