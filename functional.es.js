@@ -106,9 +106,17 @@ const mfReduce = ( f1, f2, f3 ) => ( f, coll ) =>
 	; 
 
 const _map = mfReduce( 
-	  f => ( m, [ k, v ] ) => go( f( v ), v => m .set( k, v ) ) 
-	, f => ( arr, v ) => go( f( v ), v => ( arr .push( v ), arr ) ) 
-	, f => ( o, [ k, v ] ) => go( f ( v ), v => ( o[ k ] = v, o ) ) 
+	  f => ( m, [ k, v ] ) => go( f( v ), v => 
+		m .set( k, v ) 
+		) 
+	, f => ( arr, v ) => go( f( v ), v => ( 
+		  arr .push( v ) 
+		, arr 
+		) ) 
+	, f => ( o, [ k, v ] ) => go( f( v ), v => ( 
+		  o[ k ] = v 
+		, o 
+		) ) 
 	) 
 	; 
 
