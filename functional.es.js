@@ -482,8 +482,10 @@ const baseSel = sep => curry2( ( selector, acc ) =>
 	: isObject( selector ) ? findWhere( selector, acc ) 
 	: reduce( ( acc, key, tk = key .trim(), s = tk[ 0 ] ) => 
 		  ! acc ? acc 
-		: s == '#' ? findWhere( { id : tk.substr( 1 ) }, acc ) 
-		: s == '[' || s == '{' ? findWhere( JSON .parse( tk ), acc ) 
+		: s == '#' 
+			? findWhere( { id : tk.substr( 1 ) }, acc ) 
+		: s == '[' || s == '{' 
+			? findWhere( JSON .parse( tk ), acc ) 
 		: acc[ tk ] 
 		, acc 
 		, selector .split( sep ) 
