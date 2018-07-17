@@ -87,7 +87,8 @@ const tuple = ( ... args ) =>
 	: new Tuple( ... args ) // construct Tuple 
 	; 
 
-const toTuple = ( list ) => list .length == 1 ? list[ 0 ] 
+const toTuple = ( list ) => 
+	list .length == 1 ? list[ 0 ] 
 	: tuple( ... list ) 
 	; // value or tuple list 
 
