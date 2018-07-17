@@ -382,14 +382,13 @@ const findValC = curry2( ( f, coll, limit = Infinity ) => {
 		! function recur() { 
 			var t = 0, r = 0; 
 			for ( const a of iter ) { 
-				  ++t 
-				, thenCatch( 
-					  b => b === undefined ? t == ++r && iter .remain && recur() 
-					: resolve( b ) 
-				, reject 
-				, f( a ) 
-				) 
-					; 
+				++ t; 
+				thenCatch( 
+						  b => b === undefined ? t == ++r && iter .remain && recur() 
+						: resolve( b ) 
+					, reject 
+					, f( a ) 
+					); 
 				} 
 			}() 
 			; 
