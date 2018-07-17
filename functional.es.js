@@ -82,7 +82,8 @@ class Tuple { // callRight joiner
 
 const tuple = ( ... args ) => 
 	  args .length == 1 ? args[ 0 ] 
-	: find( arg => arg instanceof Promise, args ) ? then( toTuple, Promise .all( args ) ) // toTuple from await Promise() 
+	: find( arg => arg instanceof Promise, args ) 
+		? then( toTuple, Promise .all( args ) ) // toTuple from await Promise() 
 	: new Tuple( ... args ) // construct Tuple 
 	; 
 
