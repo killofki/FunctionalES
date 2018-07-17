@@ -87,7 +87,9 @@ const tuple = ( ... args ) =>
 	: new Tuple( ... args ) // construct Tuple 
 	; 
 
-const toTuple = ( list ) => list .length == 1 ? list[ 0 ] : tuple( ... list ); // value or tuple list 
+const toTuple = ( list ) => list .length == 1 ? list[ 0 ] 
+	: tuple( ... list ) 
+	; // value or tuple list 
 
 const callRight = ( arg, f ) => 
 	  arg instanceof Tuple ? f( ... arg ) // join from Tuple 
