@@ -417,22 +417,20 @@ function hurdle( ... fs ) {
 					: catched ? arg 
 					: go( 
 						  find( pnb => callRight( arg, pnb .predi ), exceptions ) 
-						, pnb => { 
-							if ( pnb ) { 
-								return ( catched = true, callRight( arg, pnb .body ) ); 
-								} 
-							if ( ! errorF ) { 
-								return callRight( arg, f ); 
-								} 
-							try { 
-								var res = callRight( arg, f ); 
-								res = res instanceof Promise ? res .then( identity, err => error = err ) : res; 
-								} 
-							catch ( err ) { 
-								error = err; 
-								} 
-							return res; 
-							} 
+						, pnb => ( 
+							  pnb ? ( catched = true, callRight( arg, pnb .body ) ) 
+							: ! errorF ? callRight( arg, f ) 
+							: ( q => { 
+								try { 
+									var res = callRight( arg, f ); 
+									res = res instanceof Promise ? res .then( identity, err => error = err ) : res; 
+									} 
+								catch ( err ) { 
+									error = err; 
+									} 
+								return res; 
+								} )() 
+							) 
 						) 
 				, toTuple( ar ) 
 				, fs 
