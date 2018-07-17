@@ -45,7 +45,7 @@ function * entriesIterator( coll ) {
 
 const 
 	  hasIter = a => !! ( a && a[ Symbol .iterator ] ) 
-	, isObject = a => !! a && ( typeof a == 'object' || typeof a == 'function' ) 
+	, isObject = a => !! a && [ 'object', 'function' ] .some( t => typeof a == t ) 
 	; 
 
 const valuesIter = coll => 
