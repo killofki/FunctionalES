@@ -9,7 +9,10 @@ const curry2 = f => ( ... _ ) =>
 
 const flip = f => ( ... _ ) => f( ... _ .reverse() ); 
 
-const then = curry2( ( f, a ) => a instanceof Promise ? a .then( f ) : f( a ) ); 
+const then = curry2( ( f, a ) => 
+	  a instanceof Promise ? a .then( f ) 
+	: f( a ) 
+	); 
 
 const { log } = console; 
 
