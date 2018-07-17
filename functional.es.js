@@ -418,7 +418,10 @@ function hurdle( ... fs ) {
 					: go( 
 						  find( pnb => callRight( arg, pnb .predi ), exceptions ) 
 						, pnb => ( 
-							  pnb ? ( catched = true, callRight( arg, pnb .body ) ) 
+							  pnb ? ( 
+								  catched = true
+								, callRight( arg, pnb .body ) 
+								) 
 							: ! errorF ? callRight( arg, f ) 
 							: ( q => { 
 								try { 
