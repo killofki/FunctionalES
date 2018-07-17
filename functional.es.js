@@ -224,9 +224,12 @@ const every = curry2( ( f, coll ) => {
 	; 
 
 const isMatch = curry2( ( a, b ) => 
-	  typeof a == 'function' ? a( b ) 
-	: Array .isArray( b ) && Array .isArray( a ) ? every( v => b .includes( v ), a ) 
-	: typeof b == 'object' ? every( ([ k, v ]) => b[ k ] == v, ObjIter .entries( a ) ) 
+	  typeof a == 'function' 
+		? a( b ) 
+	: Array .isArray( b ) && Array .isArray( a ) 
+		? every( v => b .includes( v ), a ) 
+	: typeof b == 'object' 
+		? every( ([ k, v ]) => b[ k ] == v, ObjIter .entries( a ) ) 
 	: a == b 
 	) 
 	; 
