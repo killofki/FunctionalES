@@ -49,7 +49,10 @@ const
 	; 
 
 const valuesIter = coll => 
-	  hasIter( coll ) ? coll[ typeof coll .values == 'function' ? 'values' : Symbol .iterator ]() 
+	  hasIter( coll ) ? coll[ 
+		  typeof coll .values == 'function' ? 'values' 
+		: Symbol .iterator 
+		]() 
 	: ObjIter .values( coll ) 
 	; // isPlainObject 
 
