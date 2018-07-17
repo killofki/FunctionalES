@@ -300,19 +300,20 @@ const and = ( ... fs ) => {
 
 function stepIter( data, limit ) { 
 	var iter = valuesIter( data ), i = 0; 
-	return limit == Infinity ? iter : { 
-		  [ 'next' ]() { // next : 
-			if ( i++ == limit ) { 
-				i = 0; 
-				return { value: undefined, done: true }; 
+	return limit == Infinity ? iter 
+		: { 
+			  [ 'next' ]() { // next : 
+				if ( i++ == limit ) { 
+					i = 0; 
+					return { value: undefined, done: true }; 
+					} 
+				var cur = iter .next(); 
+				this .remain = ! cur .done; 
+				return cur; 
 				} 
-			var cur = iter .next(); 
-			this .remain = ! cur .done; 
-			return cur; 
+			, [ Symbol .iterator ]() { return this; } 
+			, remain : true 
 			} 
-		, [ Symbol .iterator ]() { return this; } 
-		, remain : true 
-		} 
 	} 
 
 const mapIter = curry2( ( f, iter, res = [] ) => { 
@@ -477,8 +478,10 @@ function hurdle( ... fs ) {
 	} // -- hurdle() 
 
 const baseSel = sep => curry2( ( selector, acc ) => 
-	  Array .isArray( selector ) ? reduce( flip( baseSel( sep ) ), acc, selector ) 
-	: isObject( selector ) ? findWhere( selector, acc ) 
+	  Array .isArray( selector ) 
+		? reduce( flip( baseSel( sep ) ), acc, selector ) 
+	: isObject( selector ) 
+		? findWhere( selector, acc ) 
 	: reduce( ( acc, key, tk = key .trim(), s = tk[ 0 ] ) => 
 		  ! acc ? acc 
 		: s == '#' 
