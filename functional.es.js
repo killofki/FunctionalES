@@ -425,9 +425,7 @@ function hurdle( ... fs ) {
 									var res = callRight( arg, f ); 
 									res = res instanceof Promise ? res .then( identity, err => error = err ) : res; 
 									} 
-								catch ( err ) { 
-									error = err; 
-									} 
+								catch ( err ) { error = err; } 
 								return res; 
 								} )() 
 							) 
