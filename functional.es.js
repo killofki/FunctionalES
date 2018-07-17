@@ -135,9 +135,18 @@ const mapS = curry2( ( f, coll ) => reduce(
 	; 
 
 const filter = curry2( mfReduce( 
-	  f => ( m, [ k, v ] ) => go( f( v ), b => b ? m .set( k, v ) : m ) 
-	, f => ( arr, v ) => go( f( v ), b => ( b && arr .push( v ), arr ) ) 
-	, f => ( o, [ k, v ] ) => go( f( v ), b => ( b && ( o[ k ] = v ), o ) ) 
+	  f => ( m, [ k, v ] ) => go( f( v ), b => 
+		  b ? m .set( k, v ) 
+		: m 
+		) 
+	, f => ( arr, v ) => go( f( v ), b => ( 
+		  b && arr .push( v )
+		, arr 
+		) ) 
+	, f => ( o, [ k, v ] ) => go( f( v ), b => ( 
+		  b && ( o[ k ] = v )
+		, o 
+		) ) 
 	) ) 
 	; 
 
