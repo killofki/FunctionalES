@@ -246,9 +246,9 @@ const baseMatch = ( targets ) => {
 		} 
 	
 	function _case( f ) { 
-		cbs .push({ _case : 
-				  typeof f == 'function' 
-					? pipe( ... arguments ) 
+		cbs .push({ 
+			_case : 
+				  typeof f == 'function' ? pipe( ... arguments ) 
 				: isMatch( f ) 
 			}); 
 		return _body; 
