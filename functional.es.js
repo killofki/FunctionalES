@@ -22,7 +22,7 @@ const noop = () => {}
 
 const ObjIter = curry2( 
 	( generator, coll, iter = generator( coll ) ) => 
-		({ next : _ => iter .next(), [ Symbol .iterator ]() { return this } }) 
+		({ next : _ => iter .next(), [ Symbol .iterator ] : minorThis( identity ) }) 
 	) 
 	; 
 
@@ -176,7 +176,7 @@ const pipe = ( ... _fs ) =>
 	; 
 
 const hurdles = map( 
-	  name => function( ... fs2 ) { return hurdle( ... this ._fs )[ name ]( ... fs2 ) } 
+	  name => minorThis( ( self, ... fs2 ) => hurdle( ... self ._fs )[ name ]( ... fs2 ) ) 
 	, { 
 		  nullable : 'nullable' 
 		, error : 'error' 
@@ -313,16 +313,16 @@ function stepIter( data, limit ) {
 	var iter = valuesIter( data ), i = 0; 
 	return limit == Infinity ? iter 
 		: { 
-			  [ 'next' ]() { // next : 
+			  [ 'next' ] : minorThis( self => { // next : 
 				if ( i++ == limit ) { 
 					i = 0; 
 					return { value: undefined, done: true }; 
 					} 
 				var cur = iter .next(); 
-				this .remain = ! cur .done; 
+				self .remain = ! cur .done; 
 				return cur; 
-				} 
-			, [ Symbol .iterator ]() { return this; } 
+				} ) 
+			, [ Symbol .iterator ] : minorThis( identity ) 
 			, remain : true 
 			} 
 		; 
@@ -505,6 +505,8 @@ function hurdle( ... fs ) {
 	
 	return evaluator; 
 	} // -- hurdle() 
+
+function minorThis( F = this ) { return function( ... ar ) { return F( this, ... ar ); }; } 
 
 const baseSel = sep => curry2( ( selector, acc ) => 
 	  Array .isArray( selector ) 
