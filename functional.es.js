@@ -26,11 +26,9 @@ const ObjIter = curry2(
 	) 
 	; 
 
-function * valuesIterator( coll ) { 
-	for ( const key in coll ) { 
-		yield coll[ key ]; 
-		} 
-	} 
+function * valuesIterator( coll ) { for ( const key in coll ) { 
+	yield coll[ key ]; 
+	} } 
 
 function * entriesIterator( coll ) { 
 	for ( const key in coll ) { 
@@ -240,7 +238,7 @@ const isMatch = curry2( ( a, b ) =>
 
 const findWhere = curry2( ( w, coll ) => find( isMatch( w ), coll ) ); 
 
-const baseMatch = ( targets ) => { 
+const baseMatch = targets => { 
 	var cbs = []; 
 	
 	function _evl() { 
