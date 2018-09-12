@@ -19,7 +19,7 @@ describe( '[ curry2 ]', q => {
 
 describe( '[ pipe ]', [ self => { 
 	const add1 = a => a + 1; 
-	const add1P = a => new Promise( resolve => setTimeout( () => resolve( a + 1 ), 1000 ) ); 
+	const add1P = a => new Promise( resolve => setTimeout( q => resolve( a + 1 ), 1000 ) ); 
 	const mul2 = a => a * 2; 
 	
 	it( 'pipe 는 인자로 받은 함수들을 순차적으로 실행하는 함수를 리턴한다.', q => { 
@@ -36,8 +36,8 @@ describe( '[ pipe ]', [ self => {
 		const fP = pipe( add1P, mul2 ); 
 		expect( fP ) .to .be .a( 'function' ); 
 		
-		const p1 = fP(1); 
-		const p2 = fP(2); 
+		const p1 = fP( 1 ); 
+		const p2 = fP( 2 ); 
 		
 		expect( p1 ) .to .be .a( 'Promise' ); 
 		expect( p2 ) .to .be .a( 'Promise' ); 
