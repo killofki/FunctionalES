@@ -1,5 +1,5 @@
 const expect = require( 'chai' ) .expect; 
-const { curry2, pipe } = require('../functional.es'); 
+const { curry2, pipe } = require( '../functional.es' ); 
 
 describe( '[ curry2 ]', function () { 
 	it( 'curry2 는 함수를 리턴한다.', () => { 
