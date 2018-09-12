@@ -239,38 +239,35 @@ const isMatch = curry2( ( a, b ) =>
 const findWhere = curry2( ( w, coll ) => find( isMatch( w ), coll ) ); 
 
 const baseMatch = targets => { 
-	var cbs = []; 
-	
-	function _evl() { 
-		return go( 
+	var 
+		  cbs = [] 
+		, _ev1 = q => go( 
 			  cbs 
 			, find( pb => pb ._case( ... targets ) ) 
 			, pb => pb ._body( ... targets ) 
 			) 
-			; 
-		} 
-	
-	function _case( f ) { 
-		cbs .push({ 
-			_case : 
-				  typeof f == 'function' ? pipe( ... arguments ) 
-				: isMatch( f ) 
-			}); 
-		return _body; 
-		} 
-	_case .case = _case; 
-	
-	function _body( ... ar ) { 
-		cbs[ cbs .length - 1 ] ._body = pipe( ... ar ); 
-		return _case; 
-		} 
-	
-	_case .else = ( ... ar ) => (  
-		  _case( _ => true )( ... ar ) 
-		, targets ? _evl() 
-		: ( ... targets2 ) => ( ( targets = targets2 ), _evl() ) 
-		) 
+		, _case = f => ( 
+			  cbs .push({ 
+				_case : 
+					  typeof f == 'function' ? pipe( ... arguments ) 
+					: isMatch( f ) 
+				}) 
+			, _body 
+			) 
+		, _body = ( ... ar ) => ( 
+			  cbs[ cbs .length - 1 ] ._body = pipe( ... ar ) 
+			, _case 
+			) 
 		; 
+	
+	Object .assign( _case, { 
+		  case : _case 
+		, else : ( ... ar ) => (  
+			  _case( _ => true )( ... ar ) 
+			, targets ? _evl() 
+			: ( ... targets2 ) => ( ( targets = targets2 ), _evl() ) 
+			) 
+		} ); 
 	
 	return _case; 
 	} // -- baseMatch() 
